@@ -7,6 +7,8 @@ Dr. Fu
 """
 
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.datasets import load_iris
 from sklearn.model_selection import cross_val_score, train_test_split, KFold
 from sklearn.tree import DecisionTreeClassifier
@@ -39,9 +41,18 @@ print("Average Performance Accuracy: ", aver_accu)
 
 x_train, x_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.20)
 
+results = []
 for x in range(1, 60):
     classifier = KNeighborsClassifier(n_neighbors=x)
     classifier.fit(x_train, y_train)
     y_pred = classifier.predict(x_test)
     accu = accuracy_score(y_test, y_pred)
+    results.append(accu)
     print(x, ":", accu)
+    
+resultsDF = { i : results[i] for i in range(0, len(results)) }
+
+plt.xlabel('K')
+plt.ylabel('Accuracy')
+plt.title('K vs. Accuracy of Prediction')
+plt.bar(list(resultsDF.keys()), resultsDF.values())
