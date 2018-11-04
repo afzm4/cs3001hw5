@@ -36,9 +36,12 @@ for train_index, test_index in kf.split(X):
 
 aver_accu = total_accu/5
 print("Average Performance Accuracy: ", aver_accu)
-#print(cvs)
 
-#x_train, x_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.20)
+x_train, x_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.20)
 
-#np.savetxt('results.txt', y_pred, delimiter=',')
-
+for x in range(1, 60):
+    classifier = KNeighborsClassifier(n_neighbors=x)
+    classifier.fit(x_train, y_train)
+    y_pred = classifier.predict(x_test)
+    accu = accuracy_score(y_test, y_pred)
+    print(x, ":", accu)
